@@ -29,7 +29,7 @@ SELECT * FROM persona WHERE cuit_persona = '20202322321';
 UPDATE persona SET dom_calle='por ahí' WHERE cuit_persona = '20202322321';
 ```
 
-The following query tries to prevents blank spaces to be typed intro certain attributes in the database
+The following query tries to prevent blank spaces to be typed intro certain attributes in the database
 
 ```sql
 CREATE OR REPLACE FUNCTION quitarEspaciosEnBlanco()
