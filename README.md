@@ -109,3 +109,21 @@ UPDATE persona SET apellido_persona = 'nuevo apellido' WHERE cuit_persona = '202
 
 SELECT * FROM audi_persona;
 ```
+
+Creating a functions that concats two attributes of a table. The function will return a table of type text:
+
+````sql
+CREATE OR REPLACE FUNCTION buscarpersona2(cuit VARCHAR)
+RETURNS TABLE(concatenado text)
+AS $$
+	BEGIN
+		RETURN QUERY
+		SELECT CONCAT(p.apellido_persona, p.nombre_persona) FROM persona p WHERE p.cuit_persona = cuit;
+	END;
+$$
+LANGUAGE 'plpgsql'
+
+-- comprobacion
+SELECT * FROM persona;
+SELECT * FROM buscarpersona2('20202322321');
+```
