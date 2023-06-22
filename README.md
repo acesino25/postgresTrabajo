@@ -28,3 +28,30 @@ SELECT * FROM persona WHERE cuit_persona = '20202322321';
 
 UPDATE persona SET dom_calle='por ahí' WHERE cuit_persona = '20202322321';
 ```
+
+The following query tries to prevents blank spaces to be typed intro certain attributes in the database
+
+```sql
+CREATE OR REPLACE FUNCTION quitarEspaciosEnBlanco()
+RETURNS TRIGGER
+AS $$
+	BEGIN
+		NEW.cuit_persona := TRIM(NEW.cuit_persona);
+		NEW.apellido_persona := TRIM(NEW.apellido_persona);
+		NEW.nombre_persona := TRIM(NEW.nombre_persona);
+		NEW.dom_calle := TRIM(NEW.dom_calle);
+		-- Esto te permite imprimir en consola
+		--RAISE NOTICE 'acción performada';
+		RETURN NEW;
+	END;
+$$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER datos_personaSinEspacio
+	BEFORE INSERT OR UPDATE
+	ON persona
+	FOR EACH ROW
+	EXECUTE FUNCTION quitarEspaciosEnBlanco();
+	
+UPDATE persona SET nombre_persona=' APE' WHERE cuit_persona = '20202322321';
+```
